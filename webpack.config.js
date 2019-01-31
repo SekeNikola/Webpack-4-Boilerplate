@@ -4,8 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
@@ -14,43 +13,45 @@ module.exports = {
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {}
-          }
-        ]
+        use: [{
+          loader: 'file-loader',
+          options: {}
+        }]
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
-        loader: 'file-loader'
+        loader: 'file-loader',
+        options: {
+          name: 'src/img/[name].[ext]',
+        }
       },
       {
-  test: /\.html$/,
-    use: [
+        test: /\.html$/,
+        use: [{
+          loader: "html-loader",
+          options: {
+            minimize: true
+          }
+        }]
+      },
       {
-        loader: "html-loader",
-        options: { minimize: true }
+        test: /\.(scss|css)$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
-},
-{
-  test: /\.(scss|css)$/,
-  use: [ 'style-loader', 'css-loader','sass-loader' ]
-}
-    ]
   },
-plugins: [
-  new HtmlWebPackPlugin({
-    template: "./src/index.html",
-    filename: "./index.html"
-  }),
-  new MiniCssExtractPlugin({
-    filename: "[name].css",
-    chunkFilename: "[id].css"
-  }),
-  new CopyWebpackPlugin([
-    {from:'src/img',to:'src/img'}
-]),
-]
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html"
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
+    new CopyWebpackPlugin([{
+      from: 'src/img',
+      to: 'src/img'
+    }]),
+  ]
 };
